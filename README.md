@@ -1,10 +1,10 @@
 # Deepchecks Backend Assessment
 
-The task was to build a system that logs interactions with a Large Language Model (LLM), calculates metrics on these interactions, and alerts the user when certain conditions are met based on these metrics.
-
 ## System Design
 
-The system consists of the following components:
+The system is designed to log interactions with a Large Language Model (LLM), calculate metrics on these interactions, and alert the user when certain conditions are met based on these metrics.
+
+It follows the Hexagonal Architecture pattern, where the core business logic is decoupled from the infrastructure. The system consists of the following components:
 
 1. **Data Ingestion**: This component is responsible for ingesting data from the LLM. The data ingestion component is implemented using a REST API that accepts POST requests with the interaction data.
 2. **Data Processing**: This component is responsible for processing the interaction data and calculating metrics. The data processing component is implemented using a background worker that processes the interaction data asynchronously.
@@ -57,7 +57,7 @@ The system is implemented using Python and the following libraries:
     - Alerts are stored in the `Alert` table with details about the interaction and metric value that triggered the alert.
 
 ### API Endpoints
-1. `/log`:
+1. `POST /interactions`:
     - **Function**: Logs new interactions from a CSV file, calculates metrics, and checks for alerts.
     - **Flow**:
         - Reads the CSV file.
@@ -67,7 +67,7 @@ The system is implemented using Python and the following libraries:
             - Checks for threshold and outlier alerts.
             - Stores any triggered alerts.
         - Returns a success message.
-2. `/alerts`:
+2. `GET /alerts`:
     - **Function**: Retrieves all stored alerts.
     - **Flow**:
         - Queries the `Alert` table.

@@ -1,5 +1,11 @@
+import os
+
 from functools import lru_cache
+from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 class Settings(BaseSettings):
@@ -7,8 +13,11 @@ class Settings(BaseSettings):
     redis_port: str = "6379"
     redis_user: str = ""
     redis_password: str = ""
+    database_url: str = "sqlite:///database.db"
+    high_threshold: int = 100
+    low_threshold: int = 10
 
-    model_config = SettingsConfigDict(env_file=".env")
+    model_config = SettingsConfigDict(env_file=os.path.join(BASE_DIR, ".env"))
 
 
 @lru_cache
