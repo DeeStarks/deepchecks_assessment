@@ -14,8 +14,8 @@ class InteractionService(InteractionUsecase):
     ):
         super().__init__(repository, event, event_runner)
 
-    def all_interactions(self) -> list[InteractionEntity]:
-        return self.repository.get_all()
+    def all_interactions(self, page_number: int, page_size: int) -> list[InteractionEntity]:
+        return self.repository.get_all(page_number, page_size)
 
     def get_interaction(self, interaction_id: str) -> InteractionEntity:
         return self.repository.get(interaction_id)

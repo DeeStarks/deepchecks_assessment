@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 
 
@@ -14,3 +15,4 @@ class MetricOutput(BaseModel):
     interaction_id: str
     input_value: float
     output_value: float
+    created_at: datetime

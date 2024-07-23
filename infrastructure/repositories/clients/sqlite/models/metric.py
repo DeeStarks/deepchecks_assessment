@@ -1,5 +1,6 @@
-from sqlalchemy import Column, String, Float, ForeignKey
+from sqlalchemy import Column, DateTime, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 from domain.entities.metric import MetricEntity
 from infrastructure.repositories.clients.sqlite.models import Base
@@ -12,6 +13,7 @@ class Metric(Base):
     metric_name = Column(String, nullable=False)
     input_metric_value = Column(Float, nullable=False)
     output_metric_value = Column(Float, nullable=False)
+    created_at = Column(DateTime, server_default=func.now())
     interaction = relationship('Interaction', back_populates='metrics')
 
     def to_entity(self) -> MetricEntity:
@@ -20,5 +22,6 @@ class Metric(Base):
             metric_name=self.metric_name,
             interaction_id=self.interaction_id,
             input_value=self.input_metric_value,
-            output_value=self.output_metric_value
+            output_value=self.output_metric_value,
+            created_at=self.created_at
         )

@@ -11,15 +11,17 @@ class AlertUsecase(ABC):
         self.repository = repository
 
     @abstractmethod
-    def all_alerts(self) -> List[AlertEntity]:
+    def all_alerts(self, page_number: int, page_size: int) -> List[AlertEntity]:
         raise NotImplementedError
 
     @abstractmethod
     def filter_alerts(
         self,
-        interaction_id: int = None,
-        interaction_type: str = None,
-        alert_type: str = None
+        interaction_id: int,
+        interaction_type: str,
+        alert_type: str,
+        page_number: int,
+        page_size: int 
     ) -> List[AlertEntity]:
         raise NotImplementedError
 
@@ -41,4 +43,10 @@ class AlertUsecase(ABC):
 
     @abstractmethod
     def delete_alert(self, alert_id: str) -> AlertEntity:
+        raise NotImplementedError
+
+
+class AlertCheckerUsecase(ABC):
+    @abstractmethod
+    def check(self, value: float) -> bool:
         raise NotImplementedError

@@ -8,9 +8,13 @@ from infrastructure.repositories.clients.sqlite.models.alert import Alert
 
 
 class AlertSQLiteRepository(AlertRepository):
-    def get_all(self) -> List[AlertEntity]:
+    def get_all(self, page_number: int = 1, page_size: int = 30) -> List[AlertEntity]:
         with Session() as session:
-            alerts = session.query(Alert).all()
+            alerts = session.query(Alert) \
+                .order_by(Alert.created_at.desc()) \
+                .limit(page_size) \
+                .offset((page_number - 1) * page_size) \
+                .all()
             return [alert.to_entity() for alert in alerts]
 
     def get(self, alert_id: str) -> AlertEntity:
@@ -24,7 +28,9 @@ class AlertSQLiteRepository(AlertRepository):
         self,
         interaction_id: int = None,
         interaction_type: str = None,
-        alert_type: str = None
+        alert_type: str = None,
+        page_number: int = 1,
+        page_size: int = 30
     ) -> List[AlertEntity]:
         with Session() as session:
             query = session.query(Alert)
@@ -34,7 +40,10 @@ class AlertSQLiteRepository(AlertRepository):
                 query = query.filter(Alert.interaction_type == interaction_type)
             if alert_type:
                 query = query.filter(Alert.alert_type == alert_type)
-            alerts = query.all()
+            alerts = query.order_by(Alert.created_at.desc()) \
+                .limit(page_size) \
+                .offset((page_number - 1) * page_size) \
+                .all()
             return [alert.to_entity() for alert in alerts]
 
     def create(self, alert: AlertEntity) -> AlertEntity:

@@ -20,12 +20,17 @@ router = APIRouter(
 @router.get('/', response_model=List[InteractionOutput])
 @inject
 def get_interactions(
+    page_number: int = 1,
+    page_size: int = 30,
     interaction_service: InteractionService = Depends(Provide[Container.interaction_service])
 ) -> List[dict]:
-    return [interaction.to_dict() for interaction in interaction_service.all_interactions()]
+    return [interaction.to_dict() for interaction in interaction_service.all_interactions(
+        page_number=page_number,
+        page_size=page_size
+    )]
 
 
-@router.post('-csv', response_model=Dict[str, str])
+@router.post('/', response_model=Dict[str, str])
 @inject
 def log_interaction_from_csv(
     file: UploadFile,
@@ -41,3 +46,12 @@ def log_interaction_from_csv(
 
     interaction_service.create_interactions_from_file(filename.as_posix())
     return {"message": "Uploaded interactions are being logged"}
+
+
+@router.get('/{interaction_id}', response_model=InteractionOutput)
+@inject
+def get_interaction(
+    interaction_id: str,
+    interaction_service: InteractionService = Depends(Provide[Container.interaction_service])
+) -> dict:
+    return interaction_service.get_interaction(interaction_id).to_dict()

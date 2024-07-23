@@ -20,7 +20,7 @@ class InteractionUsecase(ABC):
         self.event_runner = event_runner
 
     @abstractmethod
-    def all_interactions(self) -> List[InteractionEntity]:
+    def all_interactions(self, page_number: int, page_size: int) -> List[InteractionEntity]:
         raise NotImplementedError
 
     @abstractmethod

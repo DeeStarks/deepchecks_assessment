@@ -1,5 +1,6 @@
 import uuid
 
+from datetime import datetime
 from enum import Enum
 
 
@@ -15,13 +16,15 @@ class AlertEntity:
         alert_type: str,
         interaction_id: str,
         interaction_type: str,
-        value: float
+        value: float,
+        created_at: datetime = None
     ):
         self.id = alert_id
         self.alert_type = alert_type
         self.interaction_id = interaction_id
         self.interaction_type = interaction_type
         self.value = value
+        self.created_at = created_at
 
     def to_dict(self):
         return {
@@ -29,7 +32,8 @@ class AlertEntity:
             'alert_type': self.alert_type,
             'interaction_id': self.interaction_id,
             'interaction_type': self.interaction_type,
-            'value': self.value
+            'value': self.value,
+            'created_at': self.created_at
         }
 
 

@@ -6,7 +6,7 @@ from domain.entities.alert import AlertEntity
 
 class AlertRepository(ABC):
     @abstractmethod
-    def get_all(self) -> List[AlertEntity]:
+    def get_all(self, page_number: int = 1, page_size: int = 30) -> List[AlertEntity]:
         raise NotImplementedError
 
     @abstractmethod
@@ -18,7 +18,9 @@ class AlertRepository(ABC):
         self,
         interaction_id: int = None,
         interaction_type: str = None,
-        alert_type: str = None
+        alert_type: str = None,
+        page_number: int = 1,
+        page_size: int = 30
     ) -> List[AlertEntity]:
         raise NotImplementedError
 

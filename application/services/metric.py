@@ -1,17 +1,26 @@
 from domain.entities.metric import MetricEntity
 from domain.repositories.metric import MetricRepository
-from domain.usecases.metric import MetricUsecase
+from domain.usecases.metric import MetricUsecase, MetricCalculatorUsecase
 
 
 class MetricService(MetricUsecase):
     def __init__(self, repository: MetricRepository):
         super().__init__(repository)
 
-    def all_metrics(self) -> list[MetricEntity]:
-        return self.repository.get_all()
+    def all_metrics(self, page_number: int, page_size: int) -> list[MetricEntity]:
+        return self.repository.get_all(page_number, page_size)
 
-    def filter_metrics(self, interaction_id: int = None) -> list[MetricEntity]:
-        return self.repository.filter_by(interaction_id=interaction_id)
+    def filter_metrics(
+        self,
+        interaction_id: int,
+        page_number: int,
+        page_size: int
+    ) -> list[MetricEntity]:
+        return self.repository.filter_by(
+            interaction_id=interaction_id,
+            page_number=page_number,
+            page_size=page_size
+        )
 
     def get_metric(self, metric_id: str) -> MetricEntity:
         return self.repository.get(metric_id)
@@ -29,13 +38,6 @@ class MetricService(MetricUsecase):
         return self.repository.delete(metric_id)
 
 
-class _BaseMetricCalculator:
-    """Base class for metric calculators."""
-    def calculate(self, text: str) -> float:
-        raise NotImplementedError
-
-
-class LengthMetricCalculator(_BaseMetricCalculator):
-    """A subclass of MetricCalculator that calculates the length of a string."""
+class LengthMetricCalculator(MetricCalculatorUsecase):
     def calculate(self, text: str) -> float:
         return len(text)

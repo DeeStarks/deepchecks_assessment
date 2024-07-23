@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 
 
@@ -10,3 +11,4 @@ class InteractionOutput(BaseModel):
     interaction_id: str
     input_text: str
     output_text: str
+    created_at: datetime

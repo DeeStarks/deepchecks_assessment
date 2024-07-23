@@ -2,26 +2,30 @@ from domain.entities.alert import AlertEntity
 from domain.entities.interaction import InteractionType
 from domain.exceptions import InvalidInteractionType
 from domain.repositories.alert import AlertRepository
-from domain.usecases.alert import AlertUsecase
+from domain.usecases.alert import AlertUsecase, AlertCheckerUsecase
 
 
 class AlertService(AlertUsecase):
     def __init__(self, repository: AlertRepository):
         super().__init__(repository)
 
-    def all_alerts(self) -> list[AlertEntity]:
-        return self.repository.get_all()
+    def all_alerts(self, page_number: int, page_size: int) -> list[AlertEntity]:
+        return self.repository.get_all(page_number, page_size)
 
     def filter_alerts(
         self,
-        interaction_id: int = None,
-        interaction_type: str = None,
-        alert_type: str = None
+        interaction_id: int,
+        interaction_type: str,
+        alert_type: str,
+        page_number: int,
+        page_size: int
     ) -> list[AlertEntity]:
         return self.repository.filter_by(
             interaction_id=interaction_id,
             interaction_type=interaction_type,
-            alert_type=alert_type
+            alert_type=alert_type,
+            page_number=page_number,
+            page_size=page_size
         )
 
     def get_alert(self, alert_id: str) -> AlertEntity:
@@ -40,26 +44,17 @@ class AlertService(AlertUsecase):
         return self.repository.delete(alert_id)
 
 
-class _BaseAlertChecker:
-    """Base alert checker class"""
-    def check(self, value: float) -> bool:
-        raise NotImplementedError
-
-
-class ThresholdAlertChecker(_BaseAlertChecker):
+class ThresholdAlertChecker(AlertCheckerUsecase):
     """A subclass of AlertChecker that notifies when a metric value exceeds a threshold."""
     def __init__(self, high: float, low: float):
         self.high = high
         self.low = low
 
-    def get_thresholds(self) -> tuple[float, float]:
-        return self.high, self.low
-
     def check(self, value: float) -> bool:
         return (value > self.high) or (value < self.low)
 
 
-class OutlierAlertChecker(_BaseAlertChecker):
+class OutlierAlertChecker(AlertCheckerUsecase):
     """A subclass of AlertChecker that notifies when a metric value is an outlier."""
     def __init__(self, prev_inputs: list[float] = [], prev_outputs: list[float] = []):
         self.prev_inputs = prev_inputs

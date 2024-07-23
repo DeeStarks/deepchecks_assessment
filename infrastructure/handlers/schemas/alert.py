@@ -1,3 +1,4 @@
+from datetime import datetime
 from pydantic import BaseModel
 
 from domain.entities.alert import AlertType
@@ -17,3 +18,4 @@ class AlertOutput(BaseModel):
     interaction_id: str
     interaction_type: InteractionType
     value: float
+    created_at: datetime

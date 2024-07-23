@@ -1,5 +1,6 @@
-from sqlalchemy import Column, String, Float, ForeignKey
+from sqlalchemy import Column, DateTime, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
 
 from domain.entities.alert import AlertEntity
 from infrastructure.repositories.clients.sqlite.models import Base
@@ -11,6 +12,7 @@ class Alert(Base):
     alert_type = Column(String, nullable=False)
     interaction_id = Column(String, ForeignKey('interactions.id'), nullable=False)
     interaction_type = Column(String, nullable=False)
+    created_at = Column(DateTime, server_default=func.now())
     value = Column(Float, nullable=False)
     interaction = relationship('Interaction', back_populates='alerts')
 
@@ -20,5 +22,6 @@ class Alert(Base):
             alert_type=self.alert_type,
             interaction_id=self.interaction_id,
             interaction_type=self.interaction_type,
-            value=self.value
+            value=self.value,
+            created_at=self.created_at
         )

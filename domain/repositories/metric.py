@@ -6,7 +6,7 @@ from domain.entities.metric import MetricEntity
 
 class MetricRepository(ABC):
     @abstractmethod
-    def get_all(self) -> List[MetricEntity]:
+    def get_all(self, page_number: int = 1, page_size: int = 30) -> List[MetricEntity]:
         raise NotImplementedError
 
     @abstractmethod
@@ -14,7 +14,12 @@ class MetricRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def filter_by(self, interaction_id: int = None) -> List[MetricEntity]:
+    def filter_by(
+        self,
+        interaction_id: int = None,
+        page_number: int = 1,
+        page_size: int = 30
+    ) -> List[MetricEntity]:
         raise NotImplementedError
 
     @abstractmethod

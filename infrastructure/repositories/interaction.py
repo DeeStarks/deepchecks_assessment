@@ -8,9 +8,13 @@ from infrastructure.repositories.clients.sqlite.models.interaction import Intera
 
 
 class InteractionSQLiteRepository(InteractionRepository):
-    def get_all(self) -> List[InteractionEntity]:
+    def get_all(self, page_number: int = 1, page_size: int = 30) -> List[InteractionEntity]:
         with Session() as session:
-            interactions = session.query(Interaction).all()
+            interactions = session.query(Interaction) \
+                .order_by(Interaction.created_at.desc()) \
+                .limit(page_size) \
+                .offset((page_number - 1) * page_size) \
+                .all()
             return [interaction.to_entity() for interaction in interactions]
 
     def get(self, interaction_id: str) -> InteractionEntity:

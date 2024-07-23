@@ -41,21 +41,22 @@ class LogInteractionQueueEvent(LogInteractionEvent):
         interaction_repository: InteractionRepository = Provide[Container.interaction_repository],
     ):
         with open(filename, "r") as f:
-            reader = csv.reader(f.read().splitlines())
+            reader = csv.reader(f)
+
+            # ignore the header and get the indexes of the "Input" and "Output" columns
+            header = next(reader, None)
+            input_index = header.index("Input")
+            output_index = header.index("Output")
 
             # retriving previous metrics to check for alerts
             input_metrics = [m.input_value for m in metric_repository.get_all()]
             output_metrics = [m.output_value for m in metric_repository.get_all()]
 
             for line in reader:
-                # ignore the header
-                if reader.line_num == 1:
-                    continue
-
                 # save the interaction
                 interaction = interaction_factory.create(
-                    input_text=line[1],
-                    output_text=line[2]
+                    input_text=line[input_index],
+                    output_text=line[output_index]
                 )
                 interaction_repository.create(interaction)
 

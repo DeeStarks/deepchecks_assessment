@@ -8,9 +8,13 @@ from infrastructure.repositories.clients.sqlite.models.metric import Metric
 
 
 class MetricSQLiteRepository(MetricRepository):
-    def get_all(self) -> List[MetricEntity]:
+    def get_all(self, page_number: int = 1, page_size: int = 30) -> List[MetricEntity]:
         with Session() as session:
-            metrics = session.query(Metric).all()
+            metrics = session.query(Metric) \
+                .order_by(Metric.created_at.desc()) \
+                .limit(page_size) \
+                .offset((page_number - 1) * page_size) \
+                .all()
             return [metric.to_entity() for metric in metrics]
 
     def get(self, metric_id: str) -> MetricEntity:
@@ -20,12 +24,20 @@ class MetricSQLiteRepository(MetricRepository):
                 raise NotFound(f'Metric with id {metric_id}')
             return metric.to_entity()
 
-    def filter_by(self, interaction_id: int = None) -> List[MetricEntity]:
+    def filter_by(
+        self,
+        interaction_id: int = None,
+        page_number: int = 1,
+        page_size: int = 30
+    ) -> List[MetricEntity]:
         with Session() as session:
             query = session.query(Metric)
             if interaction_id:
                 query = query.filter(Metric.interaction_id == interaction_id)
-            metrics = query.all()
+            metrics = query.order_by(Metric.created_at.desc()) \
+                .limit(page_size) \
+                .offset((page_number - 1) * page_size) \
+                .all()
             return [metric.to_entity() for metric in metrics]
 
     def create(self, metric: MetricEntity) -> MetricEntity:

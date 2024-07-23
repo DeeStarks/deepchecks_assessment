@@ -11,11 +11,16 @@ class MetricUsecase(ABC):
         self.repository = repository
 
     @abstractmethod
-    def all_metrics(self) -> List[MetricEntity]:
+    def all_metrics(self, page_number: int, page_size: int) -> List[MetricEntity]:
         raise NotImplementedError
 
     @abstractmethod
-    def filter_metrics(self, interaction_id: int = None) -> List[MetricEntity]:
+    def filter_metrics(
+        self,
+        interaction_id: int,
+        page_number: int,
+        page_size: int
+    ) -> List[MetricEntity]:
         raise NotImplementedError
 
     @abstractmethod
@@ -36,4 +41,10 @@ class MetricUsecase(ABC):
 
     @abstractmethod
     def delete_metric(self, metric_id: str) -> MetricEntity:
+        raise NotImplementedError
+
+
+class MetricCalculatorUsecase(ABC):
+    @abstractmethod
+    def calculate(self, text: str) -> float:
         raise NotImplementedError

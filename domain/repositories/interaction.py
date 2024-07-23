@@ -6,7 +6,7 @@ from domain.entities.interaction import InteractionEntity
 
 class InteractionRepository(ABC):
     @abstractmethod
-    def get_all(self) -> List[InteractionEntity]:
+    def get_all(self, page_number: int = 1, page_size: int = 30) -> List[InteractionEntity]:
         raise NotImplementedError
 
     @abstractmethod
