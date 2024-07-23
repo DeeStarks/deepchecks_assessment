@@ -23,7 +23,7 @@ The system is implemented using Python and the following libraries:
 
 ### Logging Interactions
 1. Input and Output Storage:
-    - Interactions are logged via the `/log` endpoint.
+    - Interactions are logged via the `/interactions` endpoint.
     - Each interaction consists of an input and output string.
 2. Database Schema:
     - `Interaction`: Stores the raw input and output.
@@ -32,7 +32,7 @@ The system is implemented using Python and the following libraries:
 3. Background Task:
     - A background task processes interactions asynchronously.
     - The task calculates metrics and checks for alerts.
-    - The task is triggered when an interactions CSV file is uploaded via the `/log` endpoint.
+    - The task is triggered when an interactions CSV file is uploaded via the `/interactions` endpoint.
 
 ### Metric Calculation
 1. Flexible Metric Calculation:
