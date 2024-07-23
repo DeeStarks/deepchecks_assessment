@@ -16,10 +16,7 @@ class MetricUsecase(ABC):
 
     @abstractmethod
     def filter_metrics(
-        self,
-        interaction_id: int,
-        page_number: int,
-        page_size: int
+        self, interaction_id: int, page_number: int, page_size: int
     ) -> List[MetricEntity]:
         raise NotImplementedError
 

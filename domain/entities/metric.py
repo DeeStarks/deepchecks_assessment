@@ -1,5 +1,4 @@
 import uuid
-
 from datetime import datetime
 
 
@@ -11,7 +10,7 @@ class MetricEntity:
         interaction_id: str,
         input_value: float,
         output_value: float,
-        created_at: datetime = None
+        created_at: datetime = None,
     ):
         self.id = metric_id
         self.metric_name = metric_name
@@ -22,12 +21,12 @@ class MetricEntity:
 
     def to_dict(self):
         return {
-            'metric_id': self.id,
-            'metric_name': self.metric_name,
-            'interaction_id': self.interaction_id,
-            'input_value': self.input_value,
-            'output_value': self.output_value,
-            'created_at': self.created_at
+            "metric_id": self.id,
+            "metric_name": self.metric_name,
+            "interaction_id": self.interaction_id,
+            "input_value": self.input_value,
+            "output_value": self.output_value,
+            "created_at": self.created_at,
         }
 
 
@@ -44,5 +43,5 @@ class MetricFactory:
             metric_name=metric_name,
             interaction_id=interaction_id,
             input_value=input_value,
-            output_value=output_value
+            output_value=output_value,
         )

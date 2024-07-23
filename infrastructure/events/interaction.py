@@ -22,23 +22,30 @@ class LogInteractionQueueEvent(LogInteractionEvent):
         # with the _send method, which contains the logic for logging interactions,
         # we can have the runner run it in a separate thread.
         return runner.run(
-            "infrastructure.events.interaction." + self._send.__qualname__,
-            filename
+            "infrastructure.events.interaction." + self._send.__qualname__, filename
         )
 
     @staticmethod
     @inject
     def _send(
         filename: str,
-        length_metric: LengthMetricCalculator = Provide[Container.length_metric_calculator],
-        threshold_alert: ThresholdAlertChecker = Provide[Container.threshold_alert_checker],
+        length_metric: LengthMetricCalculator = Provide[
+            Container.length_metric_calculator
+        ],
+        threshold_alert: ThresholdAlertChecker = Provide[
+            Container.threshold_alert_checker
+        ],
         outlier_alert: OutlierAlertChecker = Provide[Container.outlier_alert_checker],
         alert_factory: AlertFactory = Provide[Container.alert_factory],
         alert_repository: AlertRepository = Provide[Container.alert_repository],
         metric_factory: MetricFactory = Provide[Container.metric_factory],
         metric_repository: MetricRepository = Provide[Container.metric_repository],
-        interaction_factory: InteractionFactory = Provide[Container.interaction_factory],
-        interaction_repository: InteractionRepository = Provide[Container.interaction_repository],
+        interaction_factory: InteractionFactory = Provide[
+            Container.interaction_factory
+        ],
+        interaction_repository: InteractionRepository = Provide[
+            Container.interaction_repository
+        ],
     ):
         with open(filename, "r") as f:
             reader = csv.reader(f)
@@ -55,8 +62,7 @@ class LogInteractionQueueEvent(LogInteractionEvent):
             for line in reader:
                 # save the interaction
                 interaction = interaction_factory.create(
-                    input_text=line[input_index],
-                    output_text=line[output_index]
+                    input_text=line[input_index], output_text=line[output_index]
                 )
                 interaction_repository.create(interaction)
 
@@ -64,10 +70,10 @@ class LogInteractionQueueEvent(LogInteractionEvent):
                 input_metric_value = length_metric.calculate(interaction.input_text)
                 output_metric_value = length_metric.calculate(interaction.output_text)
                 metric = metric_factory.create(
-                    metric_name='length',
+                    metric_name="length",
                     interaction_id=interaction.id,
                     input_value=input_metric_value,
-                    output_value=output_metric_value
+                    output_value=output_metric_value,
                 )
                 metric_repository.create(metric)
                 input_metrics.append(input_metric_value)
@@ -80,14 +86,14 @@ class LogInteractionQueueEvent(LogInteractionEvent):
 
                 for value, element in [
                     (input_metric_value, InteractionType.INPUT),
-                    (output_metric_value, InteractionType.OUTPUT)
+                    (output_metric_value, InteractionType.OUTPUT),
                 ]:
                     if threshold_alert.check(value):
                         alert = alert_factory.create(
                             alert_type=AlertType.THRESHOLD,
                             interaction_id=interaction.id,
                             interaction_type=element,
-                            value=value
+                            value=value,
                         )
                         alerts.append(alert)
                     if outlier_alert.check(value, element):
@@ -95,7 +101,7 @@ class LogInteractionQueueEvent(LogInteractionEvent):
                             alert_type=AlertType.OUTLIER,
                             interaction_id=interaction.id,
                             interaction_type=element,
-                            value=value
+                            value=value,
                         )
                         alerts.append(alert)
 

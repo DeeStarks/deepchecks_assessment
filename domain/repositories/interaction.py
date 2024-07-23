@@ -6,7 +6,9 @@ from domain.entities.interaction import InteractionEntity
 
 class InteractionRepository(ABC):
     @abstractmethod
-    def get_all(self, page_number: int = 1, page_size: int = 30) -> List[InteractionEntity]:
+    def get_all(
+        self, page_number: int = 1, page_size: int = 30
+    ) -> List[InteractionEntity]:
         raise NotImplementedError
 
     @abstractmethod
@@ -18,7 +20,9 @@ class InteractionRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def batch_create(self, interactions: List[InteractionEntity]) -> List[InteractionEntity]:
+    def batch_create(
+        self, interactions: List[InteractionEntity]
+    ) -> List[InteractionEntity]:
         raise NotImplementedError
 
     @abstractmethod

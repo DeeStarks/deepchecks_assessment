@@ -1,17 +1,19 @@
 from negotium import Negotium
 from negotium.brokers import Redis
 
-from domain.events.runners.detached import DetachedRunner
 from config import logger, settings
+from domain.events.runners.detached import DetachedRunner
 from utils.importers import dynamic_import
 
-
-negotium = Negotium("deepchecks", Redis(
-    host=settings.redis_host,
-    port=settings.redis_port,
-    user=settings.redis_user,
-    password=settings.redis_password,
-))
+negotium = Negotium(
+    "deepchecks",
+    Redis(
+        host=settings.redis_host,
+        port=settings.redis_port,
+        user=settings.redis_user,
+        password=settings.redis_password,
+    ),
+)
 negotium.start()
 
 

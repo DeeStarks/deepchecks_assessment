@@ -13,14 +13,16 @@ class InteractionUsecase(ABC):
         self,
         repository: InteractionRepository,
         event: LogInteractionEvent,
-        event_runner: DetachedRunner
+        event_runner: DetachedRunner,
     ):
         self.repository = repository
         self.event = event
         self.event_runner = event_runner
 
     @abstractmethod
-    def all_interactions(self, page_number: int, page_size: int) -> List[InteractionEntity]:
+    def all_interactions(
+        self, page_number: int, page_size: int
+    ) -> List[InteractionEntity]:
         raise NotImplementedError
 
     @abstractmethod
@@ -32,7 +34,9 @@ class InteractionUsecase(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def batch_create_interactions(self, interactions: List[InteractionEntity]) -> List[InteractionEntity]:
+    def batch_create_interactions(
+        self, interactions: List[InteractionEntity]
+    ) -> List[InteractionEntity]:
         raise NotImplementedError
 
     @abstractmethod

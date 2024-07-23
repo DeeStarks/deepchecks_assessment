@@ -1,6 +1,6 @@
 from domain.entities.metric import MetricEntity
 from domain.repositories.metric import MetricRepository
-from domain.usecases.metric import MetricUsecase, MetricCalculatorUsecase
+from domain.usecases.metric import MetricCalculatorUsecase, MetricUsecase
 
 
 class MetricService(MetricUsecase):
@@ -11,15 +11,10 @@ class MetricService(MetricUsecase):
         return self.repository.get_all(page_number, page_size)
 
     def filter_metrics(
-        self,
-        interaction_id: int,
-        page_number: int,
-        page_size: int
+        self, interaction_id: int, page_number: int, page_size: int
     ) -> list[MetricEntity]:
         return self.repository.filter_by(
-            interaction_id=interaction_id,
-            page_number=page_number,
-            page_size=page_size
+            interaction_id=interaction_id, page_number=page_number, page_size=page_size
         )
 
     def get_metric(self, metric_id: str) -> MetricEntity:

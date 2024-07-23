@@ -2,7 +2,7 @@ from domain.entities.alert import AlertEntity
 from domain.entities.interaction import InteractionType
 from domain.exceptions import InvalidInteractionType
 from domain.repositories.alert import AlertRepository
-from domain.usecases.alert import AlertUsecase, AlertCheckerUsecase
+from domain.usecases.alert import AlertCheckerUsecase, AlertUsecase
 
 
 class AlertService(AlertUsecase):
@@ -18,14 +18,14 @@ class AlertService(AlertUsecase):
         interaction_type: str,
         alert_type: str,
         page_number: int,
-        page_size: int
+        page_size: int,
     ) -> list[AlertEntity]:
         return self.repository.filter_by(
             interaction_id=interaction_id,
             interaction_type=interaction_type,
             alert_type=alert_type,
             page_number=page_number,
-            page_size=page_size
+            page_size=page_size,
         )
 
     def get_alert(self, alert_id: str) -> AlertEntity:
@@ -46,6 +46,7 @@ class AlertService(AlertUsecase):
 
 class ThresholdAlertChecker(AlertCheckerUsecase):
     """A subclass of AlertChecker that notifies when a metric value exceeds a threshold."""
+
     def __init__(self, high: float, low: float):
         self.high = high
         self.low = low
@@ -56,6 +57,7 @@ class ThresholdAlertChecker(AlertCheckerUsecase):
 
 class OutlierAlertChecker(AlertCheckerUsecase):
     """A subclass of AlertChecker that notifies when a metric value is an outlier."""
+
     def __init__(self, prev_inputs: list[float] = [], prev_outputs: list[float] = []):
         self.prev_inputs = prev_inputs
         self.prev_outputs = prev_outputs
@@ -68,7 +70,7 @@ class OutlierAlertChecker(AlertCheckerUsecase):
         2 standard deviations away from the mean of the values.
         """
         values = []
-        
+
         if interaction_type == InteractionType.INPUT:
             values = self.prev_inputs
         elif interaction_type == InteractionType.OUTPUT:
@@ -78,5 +80,5 @@ class OutlierAlertChecker(AlertCheckerUsecase):
 
         mean = sum(values) / len(values)
         variance = sum((x - mean) ** 2 for x in values) / len(values)
-        std_dev = variance ** 0.5
+        std_dev = variance**0.5
         return (value > mean + 2 * std_dev) or (value < mean - 2 * std_dev)

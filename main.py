@@ -4,7 +4,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from infrastructure.container import Container
 from infrastructure.handlers import Handlers
 
-
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
@@ -18,6 +17,7 @@ for handler in Handlers.iterator():
     app.include_router(handler.router)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)

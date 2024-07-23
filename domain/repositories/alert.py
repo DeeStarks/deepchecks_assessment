@@ -20,7 +20,7 @@ class AlertRepository(ABC):
         interaction_type: str = None,
         alert_type: str = None,
         page_number: int = 1,
-        page_size: int = 30
+        page_size: int = 30,
     ) -> List[AlertEntity]:
         raise NotImplementedError
 

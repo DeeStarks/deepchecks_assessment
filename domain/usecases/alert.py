@@ -21,7 +21,7 @@ class AlertUsecase(ABC):
         interaction_type: str,
         alert_type: str,
         page_number: int,
-        page_size: int 
+        page_size: int,
     ) -> List[AlertEntity]:
         raise NotImplementedError
 

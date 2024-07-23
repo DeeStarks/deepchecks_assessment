@@ -15,10 +15,7 @@ class MetricRepository(ABC):
 
     @abstractmethod
     def filter_by(
-        self,
-        interaction_id: int = None,
-        page_number: int = 1,
-        page_size: int = 30
+        self, interaction_id: int = None, page_number: int = 1, page_size: int = 30
     ) -> List[MetricEntity]:
         raise NotImplementedError
 

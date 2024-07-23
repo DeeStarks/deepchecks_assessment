@@ -1,5 +1,4 @@
 import os
-
 from types import ModuleType
 from typing import Iterator
 
@@ -15,7 +14,7 @@ class Events:
         return list(
             filter(
                 lambda module: module not in cls.__ignored,
-                os.listdir("/".join(cls.__events_base_path))
+                os.listdir("/".join(cls.__events_base_path)),
             )
         )
 
@@ -37,4 +36,5 @@ class Events:
     @staticmethod
     def log_interaction_queue() -> LogInteractionEvent:
         from infrastructure.events.interaction import LogInteractionQueueEvent
+
         return LogInteractionQueueEvent()

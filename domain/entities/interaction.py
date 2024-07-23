@@ -1,12 +1,11 @@
 import uuid
-
 from datetime import datetime
 from enum import Enum
 
 
 class InteractionType(str, Enum):
-    INPUT = 'input'
-    OUTPUT = 'output'
+    INPUT = "input"
+    OUTPUT = "output"
 
 
 class InteractionEntity:
@@ -15,7 +14,7 @@ class InteractionEntity:
         interaction_id: str,
         input_text: str,
         output_text: str,
-        created_at: datetime = None
+        created_at: datetime = None,
     ):
         self.id = interaction_id
         self.input_text = input_text
@@ -24,10 +23,10 @@ class InteractionEntity:
 
     def to_dict(self):
         return {
-            'interaction_id': self.id,
-            'input_text': self.input_text,
-            'output_text': self.output_text,
-            'created_at': self.created_at
+            "interaction_id": self.id,
+            "input_text": self.input_text,
+            "output_text": self.output_text,
+            "created_at": self.created_at,
         }
 
 
@@ -37,5 +36,5 @@ class InteractionFactory:
         return InteractionEntity(
             interaction_id=uuid.uuid4().__str__(),
             input_text=input_text,
-            output_text=output_text
+            output_text=output_text,
         )

@@ -1,5 +1,4 @@
 import os
-
 from types import ModuleType
 from typing import Iterator
 
@@ -13,7 +12,7 @@ class Handlers:
         return list(
             filter(
                 lambda module: module not in cls.__ignored,
-                os.listdir("/".join(cls.__handlers_base_path))
+                os.listdir("/".join(cls.__handlers_base_path)),
             )
         )
 
@@ -25,6 +24,7 @@ class Handlers:
     def iterator(cls) -> Iterator[ModuleType]:
         for module in cls.__all_module_names():
             import importlib
+
             handler = importlib.import_module(cls.__module_namespace(module[:-3]))
             yield handler
 
