@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from config import settings
 from infrastructure.container import Container
 from infrastructure.handlers import Handlers
 
@@ -20,4 +21,4 @@ for handler in Handlers.iterator():
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=settings.web_port)

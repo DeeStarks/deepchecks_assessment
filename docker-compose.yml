@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  web:
+    build: .
+    network_mode: "host"
+    depends_on:
+      - redis
+  redis:
+    image: "redis:7.0.8"
+    ports:
+      - "${REDIS_PORT}:6379"

@@ -75,26 +75,13 @@ The system is implemented using Python and the following libraries:
 
 ## Usage
 
-> - SQLite is used as the database for this system. So, no additional setup is required for the database.
-> - For the background tasks, a Redis server is required. You can run a Redis server using Docker with the following command:
->
->   ```bash
->   docker run -d -p 6379:6379 redis
->   ```
-
 To run the system, follow these steps:
 
-1. Copy the contents of the `.env.example` file to a new file named `.env` and set the environment variables if using different values from the example.
-2. Create and activate a virtual environment using `virtualenv`, `pipenv`, or any other tool of your choice.
-3. Install the required Python packages:
+> - SQLite is used as the database for this system. So, no additional setup is required for the database.
+> - Copy the `.env.example` file to `.env` and update the values as needed.
 
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Run the FastAPI application:
+### Docker
 
-   ```bash
-    uvicorn main:app --reload
-    ```
-
-The FastAPI application will start running on `http://localhost:8000`. You can access the Swagger UI at `http://localhost:8000/docs` to interact with the API.
+```bash
+docker-compose up
+```
